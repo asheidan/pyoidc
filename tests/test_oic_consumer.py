@@ -17,6 +17,7 @@ from oic.utils.sdb import SessionDB
 from fakeoicsrv import MyFakeOICServer
 
 import certs
+import tempfile,shutil
 
 CLIENT_SECRET = "abcdefghijklmnop"
 CLIENT_ID = "client_1"
@@ -192,8 +193,9 @@ class TestOICConsumer():
 
 
     def test_begin_file(self):
+        temp_dir = tempfile.mkdtemp(prefix="pyoidc-test-tmp")
         self.consumer.config["request_method"] = "file"
-        self.consumer.config["temp_dir"] = "./file"
+        self.consumer.config["temp_dir"] = temp_dir
         self.consumer.config["temp_path"] = "/tmp/"
         srv = Server()
         srv.keyjar = SRVKEYS
@@ -211,6 +213,8 @@ class TestOICConsumer():
         assert authreq["scope"] == self.consumer.config["scope"]
         assert authreq["client_id"] == self.consumer.client_id
         assert authreq["redirect_uri"].startswith("http://localhost:8087/authz")
+
+        shutil.rmtree(temp_dir)
 
     def test_complete(self):
         mfos = MyFakeOICServer("http://localhost:8088")
