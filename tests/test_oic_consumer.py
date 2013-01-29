@@ -16,13 +16,13 @@ from oic.utils.sdb import SessionDB
 
 from fakeoicsrv import MyFakeOICServer
 
+import certs
+
 CLIENT_SECRET = "abcdefghijklmnop"
 CLIENT_ID = "client_1"
 
-RSAPUB = "../oc3/certs/mycert.key"
-
 KC_HMAC_VS = KeyBundle({"hmac": CLIENT_SECRET}, usage=["ver", "sig"])
-KC_RSA = KeyBundle(source="file://%s" % RSAPUB, type="rsa", usage=["ver", "sig"])
+KC_RSA = KeyBundle(source=certs.uri("mycert.key"), type="rsa", usage=["ver", "sig"])
 KC_HMAC_S = KeyBundle({"hmac": CLIENT_SECRET}, usage=["sig"])
 
 SRVKEYS = KeyJar()

@@ -35,6 +35,8 @@ from oic.oauth2.provider import AuthnFailure
 from oic.utils import http_util
 from oic.utils.time_util import epoch_in_a_while
 
+import certs
+
 CLIENT_CONFIG = {
     "client_id": "number5",
     "ca_certs": "/usr/local/etc/oic/ca_certs.txt",
@@ -92,7 +94,7 @@ CLIENT_ID = "client_1"
 
 KC_HMAC = KeyBundle({"hmac": CLIENT_SECRET}, usage=["ver", "sig"])
 KC_HMAC2 = KeyBundle({"hmac": "drickyoughurt"}, usage=["ver", "sig"])
-KC_RSA = KeyBundle(source="file://../oc3/certs/mycert.key", type="rsa",
+KC_RSA = KeyBundle(source=certs.uri("mycert.key"), type="rsa",
                   usage=["sig", "ver"])
 KEYJAR = KeyJar()
 KEYJAR[CLIENT_ID] = [KC_HMAC, KC_RSA]

@@ -47,6 +47,8 @@ from pytest import raises
 
 from fakeoicsrv import MyFakeOICServer
 
+import certs
+
 def _eq(l1, l2):
     s1 = set(l1)
     s2 = set(l2)
@@ -56,7 +58,7 @@ CLIENT_SECRET = "abcdefghijklmnop"
 CLIENT_ID = "client_1"
 
 KC_HMAC_VS = KeyBundle({"hmac": "abcdefghijklmnop"}, usage=["ver", "sig"])
-KC_RSA = KeyBundle(source="file://../oc3/certs/mycert.key", type="rsa",
+KC_RSA = KeyBundle(source=certs.uri("mycert.key"), type="rsa",
                   usage=["ver", "sig"])
 KC_HMAC_S = KeyBundle({"hmac": "abcdefghijklmnop"}, usage=["sig"])
 

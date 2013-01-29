@@ -8,6 +8,8 @@ from jwkest import jwk, jwe
 from jwkest.jwk import x509_rsa_loads
 from oic.utils.keyio import key_export, KeyJar, KeyBundle
 
+import certs
+
 def _eq(l1, l2):
     return set(l1) == set(l2)
 
@@ -27,11 +29,11 @@ def test_chain_1():
     assert kc.source is None
 
 def test_chain_2():
-    kc = KeyBundle(source="file://../oc3/certs/mycert.key", type="rsa",
+    kc = KeyBundle(source=certs.uri("mycert.key"), type="rsa",
                   usage=["ver", "sig"])
     assert kc.usage == ["ver", "sig"]
     assert kc.remote == False
-    assert kc.source == "../oc3/certs/mycert.key"
+    assert kc.source == certs.path("mycert.key")
     assert len(kc.get("hmac")) == 0
     assert len(kc.get("rsa")) == 1
 
@@ -41,7 +43,7 @@ def test_chain_2():
     kc.update()
     assert kc.usage == ["ver", "sig"]
     assert kc.remote == False
-    assert kc.source == "../oc3/certs/mycert.key"
+    assert kc.source == certs.path("mycert.key")
     assert len(kc.get("hmac")) == 0
     assert len(kc.get("rsa")) == 1
 
@@ -49,11 +51,11 @@ def test_chain_2():
     assert isinstance(key, M2Crypto.RSA.RSA)
 
 def test_chain_3():
-    kc = KeyBundle(source="file://../oc3/certs/server.crt", type="rsa",
+    kc = KeyBundle(source=certs.uri("server.crt"), type="rsa",
                   src_type="x509", usage=["sig", "enc"])
     assert kc.usage == ["sig", "enc"]
     assert kc.remote == False
-    assert kc.source == "../oc3/certs/server.crt"
+    assert kc.source == certs.path("server.crt")
     assert len(kc.get("hmac")) == 0
     assert len(kc.get("rsa")) == 1
 
@@ -63,7 +65,7 @@ def test_chain_3():
     kc.update()
     assert kc.usage == ["sig", "enc"]
     assert kc.remote == False
-    assert kc.source == "../oc3/certs/server.crt"
+    assert kc.source == certs.path("server.crt")
     assert len(kc.get("hmac")) == 0
     assert len(kc.get("rsa")) == 1
 
