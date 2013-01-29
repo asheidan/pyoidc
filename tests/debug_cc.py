@@ -7,6 +7,8 @@ from oic.utils.keyio import KeyChain
 from oic.oic.claims_provider import ClaimsClient
 from oic.oic.claims_provider import ClaimsServer
 
+import certs
+
 #noinspection PyUnusedLocal
 def user_info(oicsrv, userdb, user_id, client_id="", user_info_claims=None):
     #print >> sys.stderr, "claims: %s" % user_info_claims
@@ -81,7 +83,7 @@ req = cc.construct_UserClaimsRequest(request_args={"user_id": "diana",
 
 srv = ClaimsServer("name", None, CDB, FUNCTIONS, USERDB)
 
-srv.keyjar[""] = [KeyChain(source="file://rsa.key", usage=["ver", "sig"])]
+srv.keyjar[""] = [KeyChain(source=certs.uri("rsa.key"), usage=["ver", "sig"])]
 assert srv
 
 environ = BASE_ENVIRON.copy()

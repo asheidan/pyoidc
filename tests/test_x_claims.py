@@ -12,6 +12,8 @@ from oic.oic.claims_provider import UserClaimsResponse
 from oic.oic.claims_provider import UserClaimsRequest
 from oic.oic.claims_provider import ClaimsServer
 
+import certs
+
 #noinspection PyUnusedLocal
 def user_info(oicsrv, userdb, user_id, client_id="", user_info_claims=None):
     #print >> sys.stderr, "claims: %s" % user_info_claims
@@ -131,7 +133,7 @@ def test_srv2():
 
     srv = ClaimsServer("name", None, CDB, FUNCTIONS, USERDB)
 
-    srv.keyjar[""] = [KeyBundle(source="file://rsa.key", usage=["ver", "sig"])]
+    srv.keyjar[""] = [KeyBundle(source=certs.uri("rsa.key"), usage=["ver", "sig"])]
     assert srv
 
     environ = BASE_ENVIRON.copy()
