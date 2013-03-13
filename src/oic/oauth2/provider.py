@@ -38,6 +38,7 @@ LOG_DEBUG = logger.debug
 
 class AuthnFailure(Exception):
     pass
+class 
 
 
 def get_post(environ):
@@ -283,7 +284,7 @@ class Provider(object):
 
         LOG_DEBUG("AccessTokenRequest: %s" % areq)
 
-        assert areq["grant_type"] == "authorization_code"
+        assert areq["grant_type"] == "authorization_code", "grant_type"
 
         # assert that the code is valid
         _access_code = areq["code"]
@@ -292,7 +293,7 @@ class Provider(object):
         # If redirect_uri was in the initial authorization request
         # verify that the one given here is the correct one.
         if "redirect_uri" in _info:
-            assert areq["redirect_uri"] == _info["redirect_uri"]
+            assert areq["redirect_uri"] == _info["redirect_uri"], "redirect_uri"
 
         try:
             _tinfo = _sdb.update_to_token(areq["code"])
@@ -371,7 +372,7 @@ class Provider(object):
                     # redirect_uri
                     if rquery:
                         for key, vals in rquery.items():
-                            assert key in _query
+                            assert key in _query, "redirect_uri"
                             for val in vals:
                                 assert val in _query[key]
                     match = True

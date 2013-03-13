@@ -26,7 +26,10 @@ CLIENTS = {
         '42': {
             'password': 'puttefnask',
             'client_secret': '',
-            'redirect_uris': [('http://localhost:8081/', None)],
+            'redirect_uris': [
+                    ('http://localhost:8081/', None),
+                    ('http://localhost:8081/second_valid', None),
+                ],
         },
     }
 
@@ -111,7 +114,9 @@ class Dispatcher:
     def __call__(self, environ, start_response):
         # TODO: Do we need the "handle"?
         self._logger.trace('Getting page for %s',environ['PATH_INFO'])
+        self._logger.trace('Query: %s',environ['QUERY_STRING'])
         self.parse_cookie_data(environ)
+        self.parse_auth(environ)
         callback = self.urls[environ['PATH_INFO']]
         result = callback(environ, start_response)
         return result
